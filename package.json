@@ -1,0 +1,125 @@
+{
+  "name": "dart-build-runner-tools",
+  "displayName": "build_runner Tools",
+  "description": "Simplify your Dart development by running build_runner commands on specific files directly from the VS Code context menu.",
+  "version": "1.0.0",
+  "publisher": "nivisi",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nivisi/vscode-dart-build-runner-tools"
+  },
+  "author": {
+    "name": "Nikita Sirovskiy"
+  },
+  "homepage": "https://github.com/nivisi/vscode-dart-build-runner-tools",
+  "bugs": {
+    "url": "https://github.com/nivisi/vscode-dart-build-runner-tools/issues"
+  },
+  "engines": {
+    "vscode": "^1.87.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Other"
+  ],
+  "keywords": [
+    "Dart",
+    "Flutter",
+    "build_runner",
+    "code generation"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "Dart build_runner Configuration",
+      "properties": {
+        "dartBuildRunner.deleteConflictingOutputs": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable or disable the --delete-conflicting-outputs flag for Dart build_runner commands."
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "dartBuildRunnerTools.buildThisFile",
+        "title": "build_runner: Build This File"
+      },
+      {
+        "command": "dartBuildRunnerTools.watchThisFile",
+        "title": "build_runner: Watch This File"
+      },
+      {
+        "command": "dartBuildRunnerTools.buildPartFiles",
+        "title": "build_runner: Build Part Files"
+      },
+      {
+        "command": "dartBuildRunnerTools.watchPartFiles",
+        "title": "build_runner: Watch Part Files"
+      },
+      {
+        "command": "dartBuildRunnerTools.enableDeleteConflictingOutputs",
+        "title": "build_runner: Enable Delete Conflicting Outputs"
+      },
+      {
+        "command": "dartBuildRunnerTools.disableDeleteConflictingOutputs",
+        "title": "build_runner: Disable Delete Conflicting Outputs"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "when": "resourceExtname == .dart || resourceExtname == ''",
+          "command": "dartBuildRunnerTools.buildPartFiles",
+          "group": "dartBuildRunnerTools@1"
+        },
+        {
+          "when": "resourceExtname == .dart || resourceExtname == ''",
+          "command": "dartBuildRunnerTools.watchPartFiles",
+          "group": "dartBuildRunnerTools@2"
+        },
+        {
+          "when": "resourceExtname == .dart",
+          "command": "dartBuildRunnerTools.buildThisFile",
+          "group": "dartBuildRunnerTools@3"
+        },
+        {
+          "when": "resourceExtname == .dart",
+          "command": "dartBuildRunnerTools.watchThisFile",
+          "group": "dartBuildRunnerTools@4"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "dartBuildRunnerTools.enableDeleteConflictingOutputs",
+          "when": "config.dartBuildRunnerTools.deleteConflictingOutputs == false"
+        },
+        {
+          "command": "dartBuildRunnerTools.disableDeleteConflictingOutputs",
+          "when": "config.dartBuildRunnerTools.deleteConflictingOutputs == true"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.87.0",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "18.x",
+    "@typescript-eslint/eslint-plugin": "^7.4.0",
+    "@typescript-eslint/parser": "^7.4.0",
+    "eslint": "^8.57.0",
+    "typescript": "^5.3.3",
+    "@vscode/test-cli": "^0.0.8",
+    "@vscode/test-electron": "^2.3.9"
+  }
+}

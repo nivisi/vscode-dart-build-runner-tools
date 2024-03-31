@@ -2,7 +2,7 @@
   "name": "dart-build-runner-tools",
   "displayName": "build_runner Tools",
   "description": "Shorten build_runner run time with just two clicks. Brings build_runner into your context menu to run it on files, folders, part files etc.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publisher": "nivisi",
   "license": "MIT",
   "repository": {

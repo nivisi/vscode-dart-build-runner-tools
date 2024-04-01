@@ -1,6 +1,6 @@
 # build_runner VS Code Tools [![marketplace][version-img]][marketplace-url] [![gh][github-img]][github]
 
-Bring [`build_runner`](https://pub.dev/packages/build_runner) into your context menu. Shorten your build ties by building / watching specific files instead of the whole codebase in just two clicks.
+Bring [`build_runner`](https://pub.dev/packages/build_runner) into your context menu. Shorten your code generation times by building / watching specific files instead of the whole codebase in just two clicks.
 
 ## Features
 

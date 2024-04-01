@@ -19,8 +19,17 @@ export function activate(context: vscode.ExtensionContext) {
 	];
 
 	commands.forEach(({ id, type, isPartFiles }) => {
-		context.subscriptions.push(vscode.commands.registerCommand(`${commandPrefix}.${id}`, async (uri?: vscode.Uri) => {
-			await processCommand(type, uri, isPartFiles);
+		context.subscriptions.push(vscode.commands.registerCommand(`${commandPrefix}.${id}`, async (file?: vscode.Uri, selectedFiles?: vscode.Uri[]) => {
+			const uris = resolveUris(file, selectedFiles);
+			if (uris.length === 0) {
+				vscode.window.showWarningMessage("No Dart files selected.");
+				return;
+			}
+
+			const buildFilters = await collectFiltersWithProgress(uris, isPartFiles);
+			if (buildFilters.length > 0) {
+				runDartCommand(buildFilters, type);
+			}
 		}));
 	});
 
@@ -37,39 +46,25 @@ export function activate(context: vscode.ExtensionContext) {
 	}));
 }
 
-async function processCommand(commandType: DartCommandType, uri?: vscode.Uri, isPartFiles: boolean = true) {
-	uri = uri || vscode.window.activeTextEditor?.document.uri || vscode.workspace.workspaceFolders?.[0]?.uri;
-
-	if (!uri) {
-		vscode.window.showWarningMessage("No active Dart file or workspace folder found.");
-		return;
-	}
-
-	const buildFilters = await collectFiltersWithProgress(uri, isPartFiles);
-	if (buildFilters.length > 0) {
-		runDartCommand(buildFilters, commandType);
-	}
+function resolveUris(file?: vscode.Uri, selectedFiles?: vscode.Uri[]): vscode.Uri[] {
+	return selectedFiles && selectedFiles.length > 0 ? selectedFiles : (file ? [file] : []);
 }
 
-async function collectFiltersWithProgress(uri: vscode.Uri, isPartFiles: boolean = true): Promise<string[]> {
+
+async function collectFiltersWithProgress(uris: vscode.Uri[], isPartFiles: boolean): Promise<string[]> {
 	return vscode.window.withProgress({
 		location: vscode.ProgressLocation.Notification,
 		title: "Collecting Build Filters...",
-		cancellable: true // Or false, depending on whether you want to allow cancellation
+		cancellable: true
 	}, async (progress, token) => {
-		token.onCancellationRequested(() => {
-			console.log("User canceled the build filter collection.");
-			// Handle cancellation if necessary, e.g., by cleaning up or stopping the operation
-		});
-
 		progress.report({ increment: 0, message: "Starting to collect files..." });
 
-		// Collect Dart files
-		const filesToProcess = await collectDartFiles(uri);
-		progress.report({ increment: 50, message: "Files collected, gathering filters..." });
+		/// TODO: Increment this URI by URI.
+		const filesToProcess = (await Promise.all(uris.map(uri => collectDartFiles(uri)))).flat();
 
-		// Collect Build Filters
+		progress.report({ increment: 50, message: "Files collected, gathering filters..." });
 		const buildFilters = await collectBuildFiles(filesToProcess, isPartFiles);
+
 		progress.report({ increment: 100, message: "Build filters ready." });
 
 		return buildFilters;

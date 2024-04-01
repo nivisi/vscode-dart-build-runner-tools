@@ -9,7 +9,7 @@ enum DartCommandType {
 const commandPrefix = "dartBuildRunnerTools";
 
 export function activate(context: vscode.ExtensionContext) {
-	/* Specific file generation */
+	/* Build / Watch commands */
 
 	const commands = [
 		{ id: 'buildThisFile', type: DartCommandType.Build, isPartFiles: false },
@@ -49,7 +49,6 @@ export function activate(context: vscode.ExtensionContext) {
 function resolveUris(file?: vscode.Uri, selectedFiles?: vscode.Uri[]): vscode.Uri[] {
 	return selectedFiles && selectedFiles.length > 0 ? selectedFiles : (file ? [file] : []);
 }
-
 
 async function collectFiltersWithProgress(uris: vscode.Uri[], isPartFiles: boolean): Promise<string[]> {
 	return vscode.window.withProgress({

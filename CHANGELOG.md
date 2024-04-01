@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.0.4
+
+- Allow to run build / watch this on folders.
+
 ## 1.0.3
 
 - Fix multi select issues

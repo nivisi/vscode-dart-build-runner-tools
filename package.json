@@ -81,12 +81,12 @@
           "group": "dartBuildRunnerTools@2"
         },
         {
-          "when": "resourceExtname == .dart",
+          "when": "resourceExtname == .dart || resourceExtname == ''",
           "command": "dartBuildRunnerTools.buildThisFile",
           "group": "dartBuildRunnerTools@3"
         },
         {
-          "when": "resourceExtname == .dart",
+          "when": "resourceExtname == .dart || resourceExtname == ''",
           "command": "dartBuildRunnerTools.watchThisFile",
           "group": "dartBuildRunnerTools@4"
         }

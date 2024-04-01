@@ -2,7 +2,7 @@
   "name": "dart-build-runner-tools",
   "displayName": "build_runner Tools",
   "description": "Bring build_runner to the context menu & run it on files, folders, part files etc.",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "publisher": "nivisi",
   "license": "MIT",
   "repository": {

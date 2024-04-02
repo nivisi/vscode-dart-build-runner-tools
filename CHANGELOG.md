@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.0.5
+
+- Downgrade the minimum VS Code version.
+
 ## 1.0.4
 
 - Allow to run build / watch this on folders.

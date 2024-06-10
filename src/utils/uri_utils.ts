@@ -8,7 +8,7 @@ export function resolveUris(file?: vscode.Uri, selectedFiles?: vscode.Uri[]): vs
 export async function collectFiltersWithProgress(uris: vscode.Uri[], isPartFiles: boolean): Promise<string[]> {
     return vscode.window.withProgress({
         location: vscode.ProgressLocation.Notification,
-        title: "Collecting Build Filters...",
+        title: "Collecting Part files...",
         cancellable: true
     }, async (progress, token) => {
         progress.report({ increment: 0, message: "Starting to collect files..." });

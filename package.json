@@ -66,6 +66,21 @@
       {
         "command": "dartBuildRunnerTools.disableDeleteConflictingOutputs",
         "title": "build_runner: Disable Delete Conflicting Outputs"
+      },
+      {
+        "command": "dartBuildRunnerTools.buildWorkspace",
+        "title": "Build Workspace",
+        "icon": "$(tools)"
+      },
+      {
+        "command": "dartBuildRunnerTools.watchWorkspace",
+        "title": "Watch Workspace",
+        "icon": "$(eye)"
+      },
+      {
+        "command": "dartBuildRunnerTools.openMenu",
+        "title": "build_runner: Menu",
+        "icon": "$(tools)"
       }
     ],
     "menus": {
@@ -73,22 +88,22 @@
         {
           "when": "resourceExtname == .dart || resourceExtname == ''",
           "command": "dartBuildRunnerTools.buildPartFiles",
-          "group": "dartBuildRunnerTools@1"
+          "group": "dartBuildRunnerToolsParts@1"
         },
         {
           "when": "resourceExtname == .dart || resourceExtname == ''",
           "command": "dartBuildRunnerTools.watchPartFiles",
-          "group": "dartBuildRunnerTools@2"
+          "group": "dartBuildRunnerToolsParts@2"
         },
         {
           "when": "resourceExtname == .dart || resourceExtname == ''",
           "command": "dartBuildRunnerTools.buildThisFile",
-          "group": "dartBuildRunnerTools@3"
+          "group": "dartBuildRunnerToolsThis@1"
         },
         {
           "when": "resourceExtname == .dart || resourceExtname == ''",
           "command": "dartBuildRunnerTools.watchThisFile",
-          "group": "dartBuildRunnerTools@4"
+          "group": "dartBuildRunnerToolsThis@2"
         }
       ],
       "commandPalette": [
@@ -99,6 +114,13 @@
         {
           "command": "dartBuildRunnerTools.disableDeleteConflictingOutputs",
           "when": "config.dartBuildRunnerTools.deleteConflictingOutputs == true"
+        }
+      ],
+      "editor/title": [
+        {
+          "when": "resourceLangId == dart",
+          "command": "dartBuildRunnerTools.openMenu",
+          "group": "navigation"
         }
       ]
     }
@@ -112,14 +134,18 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.67.0",
+    "@types/js-yaml": "^4.0.9",
     "@types/mocha": "^10.0.6",
     "@types/node": "18.x",
+    "@types/vscode": "^1.67.0",
     "@typescript-eslint/eslint-plugin": "^7.4.0",
     "@typescript-eslint/parser": "^7.4.0",
-    "eslint": "^8.57.0",
-    "typescript": "^5.3.3",
     "@vscode/test-cli": "^0.0.8",
-    "@vscode/test-electron": "^2.3.9"
+    "@vscode/test-electron": "^2.3.9",
+    "eslint": "^8.57.0",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0"
   }
 }

@@ -83,6 +83,13 @@
         "icon": "$(tools)"
       }
     ],
+    "keybindings": [
+      {
+        "command": "dartBuildRunnerTools.openMenu",
+        "key": "ctrl+b ctrl+r",
+        "mac": "ctrl+b ctrl+r"
+      }
+    ],
     "menus": {
       "explorer/context": [
         {

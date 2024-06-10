@@ -1,31 +1,37 @@
 # build_runner VS Code Tools [![marketplace][version-img]][marketplace-url] [![gh][github-img]][github]
 
-Bring [`build_runner`](https://pub.dev/packages/build_runner) into your context menu. Shorten your code generation times by building / watching specific files instead of the whole codebase in just two clicks.
+Bring [`build_runner`](https://pub.dev/packages/build_runner) to your context menu. Shorten code generation times by building / watching specific files instead of the whole codebase in just two clicks.
 
 ![vscode_showcase_part](https://github.com/nivisi/vscode-dart-build-runner-tools/assets/33932162/d8d3b376-fb47-462b-b6ca-f387dc84a2c8)
 
 ## Features
 
-### Specific files
+### Menu
 
-If you want to with specific files, e.g. `user.g.dart`, you can use **Build This** / **Watch This** command.
+You can quickly run `build_runner` on either the whole workspace or on the active file through a build_runner menu. Open it by using a predefined keybinding `ctrl+B` + `ctrl+R`:
+
+<img width=600 alt="Menu" src="https://github.com/nivisi/vscode-dart-build-runner-tools/assets/33932162/3b303cba-e5f0-4e1d-83a4-9562ad273635"/>
+
+### File context menu
+
+If you want to run `build_runner` on a specific file, e.g. `user.g.dart`, simply right click the file and select the command you need, **Build This** / **Watch This**.
 
 - **Build This**: Regenerate the code for specified files directly targeting it with `build_runner`.
 - **Watch This**: Continuously monitor and regenerate code for specified files, automatically applying changes as you work.
 
-### Part files
-
-Generated files are often declared using the `part` directive. For example, `user.dart` can be used for generating two files: `user.g.dart` and `user.freezed.dart`. This "part" command scans for and builds all associated part files within the selected files.
+You can also run `build_runner` on part files. No, there's don't need to multiselect all the files: the extension will do it for you. Just select the main file, such as `user.dart`, and the extension will gather all the associated part files, like `user.freezed.dart` and `user.g.dart`, and will run the command on those files.
 
 - **Build Parts**: Regenerate the code for `part`s of selected files.
 - **Watch Parts**: Continuously monitor and regenerate code for `part`s of specified files, automatically applying changes as you work.
 
+<img width=400 alt="Context menu" src="https://github.com/nivisi/vscode-dart-build-runner-tools/assets/33932162/767e8620-bc03-4821-bc78-ef9bd6cba749"/>
+
 ## How does it work?
 
-`build_runner` has a parameter `build-filter` used for specifying which which files to including during code generation. It can be executed like this:
+`build_runner` has a parameter `build-filter` that allows to specify which files to include for code generation.
 
 ```bash
-$ dart build_runner build --build-filter=lib/user.g.dart
+dart build_runner build --build-filter=lib/user.g.dart
 ```
 
 ...and instead of regenerating the whole codebase, it will only regenerate `lib/user.g.dart`. Although running this command with terminal is not always convenient (especially if you want to run it on multiple files). This VS Code extension puts this command to your context menu. So just right click the needed files, select the required command and you're covered.
@@ -62,5 +68,5 @@ Yes, the command is ran in a new terminal window each time it is executed. Meani
 
 [github]: https://github.com/nivisi/vscode-dart-build-runner-tools
 [github-img]: https://img.shields.io/badge/GitHub-Source%20Code-181717?logo=github
-[version-img]: https://img.shields.io/badge/marketplace-v1.0.5-007ACC?logo=visualstudiocode
+[version-img]: https://img.shields.io/badge/marketplace-v1.1.0-007ACC?logo=visualstudiocode
 [marketplace-url]: https://marketplace.visualstudio.com/items?itemName=nivisi.dart-build-runner-tools

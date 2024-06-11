@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.1.1
+
+- Fix deleteConflictingOuputs being non-configurable & ignored.
+
 ## 1.1.0
 
 ### Introducing build_runner Menu

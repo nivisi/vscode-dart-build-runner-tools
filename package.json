@@ -35,7 +35,7 @@
     "configuration": {
       "title": "Dart build_runner Configuration",
       "properties": {
-        "dartBuildRunner.deleteConflictingOutputs": {
+        "dartBuildRunnerTools.deleteConflictingOutputs": {
           "type": "boolean",
           "default": false,
           "description": "Enable or disable the --delete-conflicting-outputs flag for Dart build_runner commands."

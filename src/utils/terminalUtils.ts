@@ -62,9 +62,7 @@ export function runBuildRunner(
 
     const buildFilters = files.map(file => `--build-filter=${file}`);
 
-
     const fullCommand = `${baseCommand} ${commandVariant} ${deleteConflictingOutputsFlag} --release ${buildFilters.join(' ')}`;
-
 
     terminal.sendText(fullCommand, true);
 }

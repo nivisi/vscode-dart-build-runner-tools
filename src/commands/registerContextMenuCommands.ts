@@ -26,7 +26,7 @@ export function registerFileCommands(context: vscode.ExtensionContext) {
 
             const buildFilters = await collectFiltersWithProgress(uris, isPartFiles);
             if (buildFilters.length > 0) {
-                runDartCommand(buildFilters, type);
+                runDartCommandFromContextMenu(buildFilters, type);
             } else {
                 vscode.window.showWarningMessage("No part files found");
             }
@@ -34,7 +34,7 @@ export function registerFileCommands(context: vscode.ExtensionContext) {
     });
 }
 
-function runDartCommand(files: string[], commandType: DartCommandType) {
+function runDartCommandFromContextMenu(files: string[], commandType: DartCommandType) {
     const newTerminal = createTerminal(
         files,
         commandType,

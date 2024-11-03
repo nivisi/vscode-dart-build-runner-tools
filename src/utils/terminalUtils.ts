@@ -60,13 +60,25 @@ export function runBuildRunner(
     terminal: vscode.Terminal,
     files: string[],
     commandType: DartCommandType,
+    pubspecFile?: PubspecFile
 ) {
     const commandVariant = commandType === DartCommandType.Watch ? 'watch' : 'build';
     const baseCommand = 'dart run build_runner';
     const includeDeleteConflictingOutputs = vscode.workspace.getConfiguration().get<boolean>(`${commandPrefix}.deleteConflictingOutputs`, false);
     const deleteConflictingOutputsFlag = includeDeleteConflictingOutputs ? '--delete-conflicting-outputs' : '';
 
-    const buildFilters = files.map(file => `--build-filter=${file}`);
+    const workspaceToReplace = pubspecFile?.workspaceUri.fsPath.replace('/pubspec.yaml', '').slice(1) ?? '';
+
+    if (pubspecFile) {
+        files = files.map(
+            file => file.replace(
+                workspaceToReplace,
+                ''
+            )
+        );
+    }
+
+    const buildFilters = files.map(file => `--build-filter=${file.slice(1)}`);
 
     const fullCommand = `${baseCommand} ${commandVariant} ${deleteConflictingOutputsFlag} --release ${buildFilters.join(' ')}`;
 

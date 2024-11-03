@@ -11,7 +11,7 @@ export const workspaceCommands = [
 ];
 
 export async function registerWorkspaceCommands(context: vscode.ExtensionContext) {
-    const workspaceType = await DartWorkspaceType.from(context);
+    const workspaceType = await DartWorkspaceType.getFromContext(context);
 
     if (!workspaceType || workspaceType instanceof DartNoPubspecWorkspaceType) {
         return;

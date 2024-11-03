@@ -61,7 +61,7 @@ async function uriToPubspecFile(uri: vscode.Uri): Promise<PubspecFile | undefine
 
 
 export class DartWorkspaceType {
-    static async from(context: vscode.ExtensionContext): Promise<DartWorkspaceType | undefined> {
+    static async getFromContext(context: vscode.ExtensionContext): Promise<DartWorkspaceType | undefined> {
         const workspaceType = context.workspaceState.get("workspaceType");
         if (!workspaceType) {
             return undefined;
@@ -77,29 +77,25 @@ export class DartWorkspaceType {
         }
 
         const allPubspecs = await findPubspecs();
+        const suitablePubspecs = (await Promise.all(allPubspecs.map(uriToPubspecFile))).filter(pubspec => pubspec instanceof PubspecFile) as PubspecFile[];
 
-        if (!allPubspecs) {
+        if (!suitablePubspecs) {
             return new DartNoPubspecWorkspaceType();
         }
 
-        if (allPubspecs.length == 1) {
-            const pubspec = await uriToPubspecFile(allPubspecs[0]);
-            if (!pubspec) {
-                return new DartNoPubspecWorkspaceType();
-            }
-            const workspaceType = new DartSinglePubspecWorkspaceType(pubspec);
+        if (suitablePubspecs.length == 1) {
+            const workspaceType = new DartSinglePubspecWorkspaceType(suitablePubspecs[0]);
             return workspaceType;
         }
 
-        if (allPubspecs.length > 1) {
-            const pubspecs = (await Promise.all(allPubspecs.map(uriToPubspecFile))).filter(pubspec => pubspec instanceof PubspecFile) as PubspecFile[];
-            const rootIndex = pubspecs.findIndex(pubspec => pubspec.workspaceUri.fsPath.replace('/pubspec.yaml', '') === '');
+        if (suitablePubspecs.length > 1) {
+            const rootIndex = suitablePubspecs.findIndex(pubspec => pubspec.workspaceUri.fsPath.replace('/pubspec.yaml', '') === '');
             if (rootIndex != -1) {
-                const rootPubspec = pubspecs[rootIndex];
-                pubspecs.splice(rootIndex, 1);
-                pubspecs.unshift(rootPubspec);
+                const rootPubspec = suitablePubspecs[rootIndex];
+                suitablePubspecs.splice(rootIndex, 1);
+                suitablePubspecs.unshift(rootPubspec);
             }
-            const workspaceType = new DartMultiplePubspecsWorkspaceType(pubspecs);
+            const workspaceType = new DartMultiplePubspecsWorkspaceType(suitablePubspecs);
             return workspaceType;
         }
 

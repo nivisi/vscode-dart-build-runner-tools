@@ -6,7 +6,7 @@ import { DartMultiplePubspecsWorkspaceType, DartNoPubspecWorkspaceType, DartSing
 
 export async function registerNavigationMenuCommands(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.commands.registerCommand(`${commandPrefix}.openMenu`, async (file?: vscode.Uri, selectedFiles?: vscode.Uri[]) => {
-        const workspaceType = await DartWorkspaceType.from(context);
+        const workspaceType = await DartWorkspaceType.getFromContext(context);
         if (!workspaceType) {
             throw Error("No workspace type found");
         }
@@ -78,8 +78,6 @@ export async function registerNavigationMenuCommands(context: vscode.ExtensionCo
                 }
             }
         }
-
-
 
         switch (workspaceType.constructor) {
             case DartNoPubspecWorkspaceType:
@@ -154,7 +152,7 @@ export async function registerNavigationMenuCommands(context: vscode.ExtensionCo
         }
 
         if (label !== 'Build' && label !== 'Watch') {
-            /// Just files, not the workspace.
+            /// Meaning we're building / watching a single file.
             vscode.commands.executeCommand(`${commandPrefix}.${id}`, fileUri);
             return;
         }

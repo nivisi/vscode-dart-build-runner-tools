@@ -1,12 +1,14 @@
 import * as vscode from 'vscode';
 import { DartCommandType } from "../commands/registerContextMenuCommands";
 import { commandPrefix } from '../extension';
+import { PubspecFile } from './analyzeWorkspaceType';
 
 
 export function createTerminal(
     files?: string[],
     commandType?: DartCommandType,
     shouldTerminatePreviousTerminal: boolean = true,
+    pubspec?: PubspecFile,
 ): vscode.Terminal {
     var terminalName = 'build_runner';
 
@@ -46,6 +48,10 @@ export function createTerminal(
         name: terminalName,
         iconPath: iconPath
     });
+
+    if (pubspec) {
+        terminal.sendText(`cd ${pubspec.workspaceUri.fsPath.slice(1).replace('/pubspec.yaml', '')}`, true);
+    }
 
     return terminal;
 }

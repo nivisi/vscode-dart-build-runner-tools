@@ -107,20 +107,63 @@ export async function registerNavigationMenuCommands(context: vscode.ExtensionCo
             case DartMultiplePubspecsWorkspaceType:
                 const multi = workspaceType as DartMultiplePubspecsWorkspaceType;
 
-                for (const pubspec of multi.pubspecs) {
+                var pubspecs = multi.pubspecs;
+
+                const root = multi.pubspecs.find(pubspec => pubspec.isRoot);
+                if (root) {
+                    pubspecs = pubspecs.filter(pubspec => pubspec !== root);
+
+                    quickPickItems.push(
+                        {
+                            label: root.packageName,
+                            kind: vscode.QuickPickItemKind.Separator,
+                        },
+                        {
+                            label: `Build ${root.packageName}`,
+                            description: root.workspaceUri.fsPath.replace('/pubspec.yaml', ''),
+                            detail: `build_runner build ${root.packageName}`,
+                            iconPath: new vscode.ThemeIcon('tools'),
+                        },
+                        {
+                            label: `Watch ${root.packageName}`,
+                            description: root.workspaceUri.fsPath.replace('/pubspec.yaml', ''),
+                            detail: `build_runner watch ${root.packageName}`,
+                            iconPath: new vscode.ThemeIcon('eye')
+                        }
+                    );
+                }
+
+                quickPickItems.push(
+                    {
+                        label: 'All',
+                        kind: vscode.QuickPickItemKind.Separator,
+                    },
+                    {
+                        label: `Build All`,
+                        detail: 'Runs code generation for all packages in the workspace',
+                        iconPath: new vscode.ThemeIcon('tools'),
+                    },
+                    {
+                        label: `Watch All`,
+                        detail: 'Runs code generation for all packages in the workspace',
+                        iconPath: new vscode.ThemeIcon('eye')
+                    }
+                );
+
+                for (const pubspec of pubspecs) {
                     quickPickItems.push(
                         {
                             label: pubspec.packageName,
                             kind: vscode.QuickPickItemKind.Separator,
                         },
                         {
-                            label: 'Build',
+                            label: `Build ${pubspec.packageName}`,
                             description: pubspec.workspaceUri.fsPath.replace('/pubspec.yaml', ''),
                             detail: `build_runner build ${pubspec.packageName}`,
                             iconPath: new vscode.ThemeIcon('tools'),
                         },
                         {
-                            label: 'Watch',
+                            label: `Watch ${pubspec.packageName}`,
                             description: pubspec.workspaceUri.fsPath.replace('/pubspec.yaml', ''),
                             detail: `build_runner watch ${pubspec.packageName}`,
                             iconPath: new vscode.ThemeIcon('eye')
@@ -146,14 +189,34 @@ export async function registerNavigationMenuCommands(context: vscode.ExtensionCo
             return;
         }
 
-        const id = commandsMapped[label];
-        if (!id) {
+        const rawCommand = commandsMapped[label];
+        if (rawCommand) {
+            /// Meaning we're building / watching a single file.
+            vscode.commands.executeCommand(`${commandPrefix}.${rawCommand}`, fileUri);
             return;
         }
 
-        if (label !== 'Build' && label !== 'Watch') {
-            /// Meaning we're building / watching a single file.
-            vscode.commands.executeCommand(`${commandPrefix}.${id}`, fileUri);
+        const splitBySpace = label.split(' ');
+        if (splitBySpace.length < 2) {
+            vscode.window.showErrorMessage(`Command not found for label: ${label}`);
+            return;
+        }
+
+        const runOn = splitBySpace[1];
+        label = splitBySpace[0];
+
+        if (runOn == 'All') {
+            const command = commandsMapped[label];
+            for (const pubspec of (workspaceType as DartMultiplePubspecsWorkspaceType).pubspecs) {
+                vscode.commands.executeCommand(`${commandPrefix}.${command}`, pubspec);
+            }
+
+            return;
+        }
+
+        var id = commandsMapped[label];
+        if (!id) {
+            vscode.window.showErrorMessage(`Command not found for label: ${label}`);
             return;
         }
 

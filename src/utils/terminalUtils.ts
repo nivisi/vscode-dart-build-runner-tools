@@ -3,7 +3,6 @@ import { DartCommandType } from "../commands/registerContextMenuCommands";
 import { commandPrefix } from '../extension';
 import { PubspecFile } from './analyzeWorkspaceType';
 
-
 export function createTerminal(
     files?: string[],
     commandType?: DartCommandType,
@@ -20,7 +19,6 @@ export function createTerminal(
         terminalName += ` ${command}`;
     }
 
-
     if (files && files.length > 0) {
         if (files.length === 1) {
             const fileName = files[0].split("/").reverse()[0];
@@ -30,8 +28,9 @@ export function createTerminal(
             shouldTerminatePreviousTerminal = false;
         }
     } else {
-        terminalName += ` (${vscode.workspace.name})`;
-
+        if (pubspec && !pubspec.isRoot) {
+            terminalName += ` (${pubspec?.packageName})`;
+        }
     }
 
     if (shouldTerminatePreviousTerminal) {
@@ -49,7 +48,11 @@ export function createTerminal(
         iconPath: iconPath
     });
 
-    if (pubspec) {
+    if (!pubspec) {
+        return terminal;
+    }
+
+    if (!pubspec.isRoot) {
         terminal.sendText(`cd ${pubspec.workspaceUri.fsPath.slice(1).replace('/pubspec.yaml', '')}`, true);
     }
 

@@ -1,7 +1,7 @@
 
 import * as vscode from 'vscode';
 import { commandPrefix } from '../extension';
-import { DartMultiplePubspecsWorkspaceType, DartNoPubspecWorkspaceType, DartSinglePubspecWorkspaceType, DartWorkspaceType, PubspecFile } from '../utils/analyzeWorkspaceType';
+import { DartNoPubspecWorkspaceType, DartWorkspaceType, PubspecFile } from '../utils/analyzeWorkspaceType';
 import { createTerminal, runBuildRunner } from '../utils/terminalUtils';
 import { DartCommandType } from './registerContextMenuCommands';
 
@@ -36,17 +36,4 @@ export async function registerWorkspaceCommands(context: vscode.ExtensionContext
 
         context.subscriptions.push(command);
     });
-
-    switch (workspaceType) {
-        case DartNoPubspecWorkspaceType:
-            /* Nothing to do */
-            break;
-        case DartSinglePubspecWorkspaceType:
-
-            break;
-        case DartMultiplePubspecsWorkspaceType:
-            break;
-        default:
-            break;
-    }
 }

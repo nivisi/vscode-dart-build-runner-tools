@@ -2,7 +2,7 @@
   "name": "dart-build-runner-tools",
   "displayName": "build_runner Tools",
   "description": "Run build_runner commands directly from VS Code’s context menu, Command Palette, and keyboard shortcuts.",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "publisher": "nivisi",
   "license": "MIT",
   "repository": {

@@ -55,7 +55,8 @@ async function uriToPubspecFile(uri: vscode.Uri): Promise<PubspecFile | undefine
     return new PubspecFile(
         uri,
         relativeUri,
-        packageName
+        packageName,
+        relativeUri.fsPath === '/pubspec.yaml'
     );
 }
 
@@ -89,7 +90,7 @@ export class DartWorkspaceType {
         }
 
         if (suitablePubspecs.length > 1) {
-            const rootIndex = suitablePubspecs.findIndex(pubspec => pubspec.workspaceUri.fsPath.replace('/pubspec.yaml', '') === '');
+            const rootIndex = suitablePubspecs.findIndex(pubspec => pubspec.isRoot);
             if (rootIndex != -1) {
                 const rootPubspec = suitablePubspecs[rootIndex];
                 suitablePubspecs.splice(rootIndex, 1);
@@ -129,6 +130,7 @@ export class PubspecFile {
     constructor(
         public readonly fullUri: vscode.Uri,
         public readonly workspaceUri: vscode.Uri,
-        public readonly packageName: string
+        public readonly packageName: string,
+        public readonly isRoot: boolean
     ) { }
 }

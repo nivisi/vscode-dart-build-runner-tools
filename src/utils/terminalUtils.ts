@@ -30,8 +30,7 @@ export function createTerminal(
             shouldTerminatePreviousTerminal = false;
         }
     } else {
-        terminalName += ` (${vscode.workspace.name})`;
-
+        terminalName += ` (${pubspec?.packageName})`;
     }
 
     if (shouldTerminatePreviousTerminal) {
@@ -49,7 +48,11 @@ export function createTerminal(
         iconPath: iconPath
     });
 
-    if (pubspec) {
+    if (!pubspec) {
+        return terminal;
+    }
+
+    if (!pubspec.isRoot) {
         terminal.sendText(`cd ${pubspec.workspaceUri.fsPath.slice(1).replace('/pubspec.yaml', '')}`, true);
     }
 

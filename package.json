@@ -1,7 +1,7 @@
 {
   "name": "dart-build-runner-tools",
   "displayName": "build_runner Tools",
-  "description": "Bring build_runner to the context menu & run it on files, folders, part files etc.",
+  "description": "Run build_runner commands directly from VS Code’s context menu, Command Palette, and keyboard shortcuts.",
   "version": "1.1.1",
   "publisher": "nivisi",
   "license": "MIT",

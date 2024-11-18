@@ -26,19 +26,26 @@ async function uriToPubspecFile(uri: vscode.Uri): Promise<PubspecFile | undefine
     const contentStr = new TextDecoder("utf-8").decode(content);
 
     const lines = contentStr.split('\n');
-    const buildRunnerLine = lines.find(line => line.includes('build_runner:'));
-    if (!buildRunnerLine) {
+    const buildRunnerLines = lines.filter(line => line.includes('build_runner:'));
+    if (buildRunnerLines.length === 0) {
         return undefined;
     }
 
-    const commentIndex = buildRunnerLine.indexOf('#');
-    if (commentIndex !== -1) {
+    var hasValidBuildRunner = false;
+
+    for (const buildRunnerLine of buildRunnerLines) {
+        const commentIndex = buildRunnerLine.indexOf('#');
         const buildRunnerIndex = buildRunnerLine.indexOf('build_runner');
-        if (commentIndex < buildRunnerIndex) {
-            return undefined;
+
+        if (commentIndex === -1 || commentIndex > buildRunnerIndex) {
+            hasValidBuildRunner = true;
+            break;
         }
     }
 
+    if (!hasValidBuildRunner) {
+        return;
+    }
 
     const packageNameMatch = /name: (.+)/.exec(contentStr);
     if (!packageNameMatch) {
@@ -96,7 +103,8 @@ export class DartWorkspaceType {
                 suitablePubspecs.splice(rootIndex, 1);
                 suitablePubspecs.unshift(rootPubspec);
             }
-            const workspaceType = new DartMultiplePubspecsWorkspaceType(suitablePubspecs);
+            const sortedByName = suitablePubspecs.sort((a, b) => a.packageName.localeCompare(b.packageName));
+            const workspaceType = new DartMultiplePubspecsWorkspaceType(sortedByName);
             return workspaceType;
         }
 

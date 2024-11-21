@@ -5,7 +5,7 @@ export function resolveUris(file?: vscode.Uri, selectedFiles?: vscode.Uri[]): vs
     return selectedFiles && selectedFiles.length > 0 ? selectedFiles : (file ? [file] : []);
 }
 
-export async function collectFiltersWithProgress(uris: vscode.Uri[], isPartFiles: boolean): Promise<string[]> {
+export async function collectFilesToBuildWithProgress(uris: vscode.Uri[], partFile: boolean): Promise<string[]> {
     return vscode.window.withProgress({
         location: vscode.ProgressLocation.Notification,
         title: "Collecting Part files...",
@@ -14,14 +14,14 @@ export async function collectFiltersWithProgress(uris: vscode.Uri[], isPartFiles
         progress.report({ increment: 0, message: "Starting to collect files..." });
 
         /// TODO: Increment this URI by URI.
-        const filesToProcess = (await Promise.all(uris.map(uri => collectDartFiles(uri)))).flat();
+        const dartFilesToProcess = (await Promise.all(uris.map(uri => collectDartFiles(uri)))).flat();
 
         progress.report({ increment: 50, message: "Files collected, gathering filters..." });
-        const buildFilters = await collectBuildFiles(filesToProcess, isPartFiles);
+        const filesToBuild = await collectFilesToBuild(dartFilesToProcess, partFile);
 
         progress.report({ increment: 100, message: "Build filters ready." });
 
-        return buildFilters;
+        return filesToBuild;
     });
 }
 
@@ -58,7 +58,7 @@ async function findPartDefinitions(uri: vscode.Uri): Promise<string[]> {
     return parts;
 }
 
-async function collectBuildFiles(uris: vscode.Uri[], isPartFiles: boolean = true): Promise<string[]> {
+async function collectFilesToBuild(uris: vscode.Uri[], partFile: boolean = true): Promise<string[]> {
     const workspaceFolders = vscode.workspace.workspaceFolders;
     if (!workspaceFolders) {
         throw Error('No workspace folder found');
@@ -68,7 +68,7 @@ async function collectBuildFiles(uris: vscode.Uri[], isPartFiles: boolean = true
     const workspaceRoot = workspaceFolders[0].uri.fsPath;
 
     for (const uri of uris) {
-        if (!isPartFiles) {
+        if (!partFile) {
             const relativePath = path.relative(workspaceRoot, uri.fsPath);
             filesToBuild.push(relativePath);
         } else {

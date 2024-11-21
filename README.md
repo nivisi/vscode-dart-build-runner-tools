@@ -1,25 +1,25 @@
 # build_runner VS Code Tools [![marketplace][version-img]][marketplace-url] [![gh][github-img]][github]
 
-Bring [`build_runner`](https://pub.dev/packages/build_runner) to your context menu. Shorten code generation times by building / watching specific files instead of the whole codebase in just two clicks.
+[`build_runner`](https://pub.dev/packages/build_runner) integrated right into VS Code. Run it on specific files / projects from context menu or command palette.
 
 ![vscode_showcase_part](https://github.com/nivisi/vscode-dart-build-runner-tools/assets/33932162/d8d3b376-fb47-462b-b6ca-f387dc84a2c8)
 
 ## Features
 
-### Menu
+### Menu (Command Palette)
 
-You can quickly run `build_runner` on either the whole workspace or on the active file through a build_runner menu. Open it by using a predefined keybinding `ctrl+B` + `ctrl+R`:
+`build_runner` can be ran on the whole workspace, specific project or on the active file through a build_runner menu. Open it by using a predefined keybinding `ctrl+B` + `ctrl+R` (Windows / Mac / Linux):
 
 <img width=600 alt="Menu" src="https://github.com/nivisi/vscode-dart-build-runner-tools/assets/33932162/3b303cba-e5f0-4e1d-83a4-9562ad273635"/>
 
 ### File context menu
 
-If you want to run `build_runner` on a specific file, e.g. `user.g.dart`, simply right click the file and select the command you need, **Build This** / **Watch This**.
+If you want to run `build_runner` on a specific file, e.g. `user.g.dart`. Right click the file (or files) and select the command you need, **Build This** / **Watch This**.
 
 - **Build This**: Regenerate the code for specified files directly targeting it with `build_runner`.
 - **Watch This**: Continuously monitor and regenerate code for specified files, automatically applying changes as you work.
 
-You can also run `build_runner` on part files. No, there's don't need to multiselect all the files: the extension will do it for you. Just select the main file, such as `user.dart`, and the extension will gather all the associated part files, like `user.freezed.dart` and `user.g.dart`, and will run the command on those files.
+You can run `build_runner` on part files by selecting the main file (e.g., `user.dart`). The extension will identify all associated part files, such as `user.freezed.dart` and `user.g.dart`, and execute the command on them.
 
 - **Build Parts**: Regenerate the code for `part`s of selected files.
 - **Watch Parts**: Continuously monitor and regenerate code for `part`s of specified files, automatically applying changes as you work.
@@ -41,6 +41,10 @@ Once ran, it collects required files (part directives for **part** commands and 
 **Important**: *Generated* files must be used, not *source* files. E.g. if you have a **user.dart** that is used to generate **user.freezed.dart** class, the freezed class must be used as a parameter.
 
 ## FAQ
+
+### Are monorepos supported?
+
+Yes, the extension works in monorepos. The [build_runner menu](#menu-command-palette)) lists all supported projects. When working with files, the extension automatically detects the associated project and runs code generation for that project.
 
 ### How do I delete-conflicting-outputs?
 
@@ -68,5 +72,5 @@ Yes, the command is ran in a new terminal window each time it is executed. Meani
 
 [github]: https://github.com/nivisi/vscode-dart-build-runner-tools
 [github-img]: https://img.shields.io/badge/GitHub-Source%20Code-181717?logo=github
-[version-img]: https://img.shields.io/badge/marketplace-v1.1.1-007ACC?logo=visualstudiocode
+[version-img]: https://img.shields.io/badge/marketplace-v1.2.0-007ACC?logo=visualstudiocode
 [marketplace-url]: https://marketplace.visualstudio.com/items?itemName=nivisi.dart-build-runner-tools

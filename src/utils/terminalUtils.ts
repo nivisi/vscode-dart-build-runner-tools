@@ -1,12 +1,13 @@
 import * as vscode from 'vscode';
 import { DartCommandType } from "../commands/registerContextMenuCommands";
 import { commandPrefix } from '../extension';
-
+import { PubspecFile } from './analyzeWorkspaceType';
 
 export function createTerminal(
     files?: string[],
     commandType?: DartCommandType,
     shouldTerminatePreviousTerminal: boolean = true,
+    pubspec?: PubspecFile,
 ): vscode.Terminal {
     var terminalName = 'build_runner';
 
@@ -18,7 +19,6 @@ export function createTerminal(
         terminalName += ` ${command}`;
     }
 
-
     if (files && files.length > 0) {
         if (files.length === 1) {
             const fileName = files[0].split("/").reverse()[0];
@@ -28,8 +28,9 @@ export function createTerminal(
             shouldTerminatePreviousTerminal = false;
         }
     } else {
-        terminalName += ` (${vscode.workspace.name})`;
-
+        if (pubspec && !pubspec.isRoot) {
+            terminalName += ` (${pubspec?.packageName})`;
+        }
     }
 
     if (shouldTerminatePreviousTerminal) {
@@ -47,6 +48,14 @@ export function createTerminal(
         iconPath: iconPath
     });
 
+    if (!pubspec) {
+        return terminal;
+    }
+
+    if (!pubspec.isRoot) {
+        terminal.sendText(`cd ${pubspec.workspaceUri.fsPath.slice(1).replace('/pubspec.yaml', '')}`, true);
+    }
+
     return terminal;
 }
 
@@ -54,13 +63,25 @@ export function runBuildRunner(
     terminal: vscode.Terminal,
     files: string[],
     commandType: DartCommandType,
+    pubspecFile?: PubspecFile
 ) {
     const commandVariant = commandType === DartCommandType.Watch ? 'watch' : 'build';
     const baseCommand = 'dart run build_runner';
     const includeDeleteConflictingOutputs = vscode.workspace.getConfiguration().get<boolean>(`${commandPrefix}.deleteConflictingOutputs`, false);
     const deleteConflictingOutputsFlag = includeDeleteConflictingOutputs ? '--delete-conflicting-outputs' : '';
 
-    const buildFilters = files.map(file => `--build-filter=${file}`);
+    const workspaceToReplace = pubspecFile?.workspaceUri.fsPath.replace('/pubspec.yaml', '').slice(1) ?? '';
+
+    if (pubspecFile) {
+        files = files.map(
+            file => file.replace(
+                workspaceToReplace,
+                ''
+            )
+        );
+    }
+
+    const buildFilters = files.map(file => `--build-filter=${file.slice(1)}`);
 
     const fullCommand = `${baseCommand} ${commandVariant} ${deleteConflictingOutputsFlag} --release ${buildFilters.join(' ')}`;
 

@@ -1,4 +1,9 @@
-# Change Log
+# Changelog
+
+## 1.2.0
+
+- Support for non-root projects. The extension now works with workspaces where packages are not located in the root directory.
+- Monorepo support. If your workspace contains multiple pubspec.yaml files, you can run code generation on specific projects or across all of them.
 
 ## 1.1.1
 

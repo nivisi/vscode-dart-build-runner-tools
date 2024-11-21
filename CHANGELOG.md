@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.1
+
+- Add logo
+
 ## 1.2.0
 
 - Support for non-root projects. The extension now works with workspaces where packages are not located in the root directory.

@@ -53,7 +53,11 @@ export function createTerminal(
     }
 
     if (!pubspec.isRoot) {
-        terminal.sendText(`cd ${pubspec.workspaceUri.fsPath.slice(1).replace('/pubspec.yaml', '')}`, true);
+        var pathToCd = pubspec.workspaceUri.fsPath;
+        if (pathToCd[0] === '/') {
+            pathToCd = pathToCd.slice(1);
+        }
+        terminal.sendText(`cd ${pathToCd.replace('/pubspec.yaml', '')}`, true);
     }
 
     return terminal;
@@ -70,7 +74,12 @@ export function runBuildRunner(
     const includeDeleteConflictingOutputs = vscode.workspace.getConfiguration().get<boolean>(`${commandPrefix}.deleteConflictingOutputs`, false);
     const deleteConflictingOutputsFlag = includeDeleteConflictingOutputs ? '--delete-conflicting-outputs' : '';
 
-    const workspaceToReplace = pubspecFile?.workspaceUri.fsPath.replace('/pubspec.yaml', '').slice(1) ?? '';
+    var path = pubspecFile?.workspaceUri.fsPath;
+    if (path && path[0] === '/') {
+        path = path.slice(1);
+    }
+
+    const workspaceToReplace = path?.replace('/pubspec.yaml', '') ?? '';
 
     if (pubspecFile) {
         files = files.map(
@@ -81,7 +90,7 @@ export function runBuildRunner(
         );
     }
 
-    const buildFilters = files.map(file => `--build-filter=${file.slice(1)}`);
+    const buildFilters = files.map(file => `--build-filter=${file[0] === '/' ? file.slice(1) : file} `);
 
     const fullCommand = `${baseCommand} ${commandVariant} ${deleteConflictingOutputsFlag} --release ${buildFilters.join(' ')}`;
 

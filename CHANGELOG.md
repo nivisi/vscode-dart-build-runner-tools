@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.2
+
+- Fix the bug with part files build-filters being sliced when not needed.
+
 ## 1.2.1
 
 - Add logo

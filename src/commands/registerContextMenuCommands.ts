@@ -36,11 +36,16 @@ export function registerFileCommands(context: vscode.ExtensionContext) {
 }
 
 async function runDartCommandFromContextMenu(context: vscode.ExtensionContext, files: string[], commandType: DartCommandType) {
+    if (files.length === 0) {
+        vscode.window.showWarningMessage(`No files have been selected.`);
+        return;
+    }
+
     const pubspecFileDartFilesMap = await mapDartFilesToPubspecFiles(context, files);
 
     if (pubspecFileDartFilesMap.size === 0) {
         const filesStr = files.length === 1 ? 'file' : 'files';
-        vscode.window.showWarningMessage(`Selected ${filesStr} could not be built. Most likely there is no suitable pubspec.yaml found.`);
+        vscode.window.showWarningMessage(`Selected ${filesStr} cannot be built. Most likely there is no suitable pubspec.yaml found.`);
         return;
     }
 
@@ -67,6 +72,7 @@ async function mapDartFilesToPubspecFiles(context: vscode.ExtensionContext, file
     const pubspecFileDartFilesMap = new Map<PubspecFile, string[]>();
     const workspaceType = await DartWorkspaceType.getFromContext(context);
     if (!workspaceType) {
+        vscode.window.showWarningMessage(`No Dart workspace found.`);
         return pubspecFileDartFilesMap;
     }
 

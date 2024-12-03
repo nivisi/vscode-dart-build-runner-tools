@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.4
+
+- Use correct path separators when reading / analyzing file system.
+
 ## 1.2.3
 
 - Improve error messages.

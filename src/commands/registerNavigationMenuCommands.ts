@@ -1,5 +1,5 @@
 
-import { basename } from 'path';
+import * as path from 'path';
 import * as vscode from 'vscode';
 import { commandPrefix } from '../extension';
 import { DartMultiplePubspecsWorkspaceType, DartNoPubspecWorkspaceType, DartSinglePubspecWorkspaceType, DartWorkspaceType } from '../utils/analyzeWorkspaceType';
@@ -26,7 +26,7 @@ export async function registerNavigationMenuCommands(context: vscode.ExtensionCo
         const quickPickItems: vscode.QuickPickItem[] = [];
 
         if (fileUri) {
-            const fileBasename = basename(fileUri.toString());
+            const fileBasename = path.basename(fileUri.toString());
             if (fileBasename.endsWith('.dart')) {
                 const countDots = (fileBasename.match(/\./g) || []).length;
                 const isPartAlready = countDots > 1;
@@ -120,13 +120,13 @@ export async function registerNavigationMenuCommands(context: vscode.ExtensionCo
                         },
                         {
                             label: `Build ${root.packageName}`,
-                            description: root.workspaceUri.fsPath.replace('/pubspec.yaml', ''),
+                            description: root.workspaceUri.fsPath.replace(`${path.sep}pubspec.yaml`, ''),
                             detail: `build_runner build ${root.packageName}`,
                             iconPath: new vscode.ThemeIcon('tools'),
                         },
                         {
                             label: `Watch ${root.packageName}`,
-                            description: root.workspaceUri.fsPath.replace('/pubspec.yaml', ''),
+                            description: root.workspaceUri.fsPath.replace(`${path.sep}pubspec.yaml`, ''),
                             detail: `build_runner watch ${root.packageName}`,
                             iconPath: new vscode.ThemeIcon('eye')
                         }
@@ -158,13 +158,13 @@ export async function registerNavigationMenuCommands(context: vscode.ExtensionCo
                         },
                         {
                             label: `Build ${pubspec.packageName}`,
-                            description: pubspec.workspaceUri.fsPath.replace('/pubspec.yaml', ''),
+                            description: pubspec.workspaceUri.fsPath.replace(`${path.sep}pubspec.yaml`, ''),
                             detail: `build_runner build ${pubspec.packageName}`,
                             iconPath: new vscode.ThemeIcon('tools'),
                         },
                         {
                             label: `Watch ${pubspec.packageName}`,
-                            description: pubspec.workspaceUri.fsPath.replace('/pubspec.yaml', ''),
+                            description: pubspec.workspaceUri.fsPath.replace(`${path.sep}pubspec.yaml`, ''),
                             detail: `build_runner watch ${pubspec.packageName}`,
                             iconPath: new vscode.ThemeIcon('eye')
                         }
@@ -232,7 +232,7 @@ export async function registerNavigationMenuCommands(context: vscode.ExtensionCo
 
                 break;
             case DartMultiplePubspecsWorkspaceType:
-                const description = (selected?.description ?? '') + '/pubspec.yaml';
+                const description = (selected?.description ?? '') + `${path.sep}pubspec.yaml`;
 
                 const multiWorkspace = workspaceType as DartMultiplePubspecsWorkspaceType;
                 const selectedPubspec = multiWorkspace.pubspecs.find(pubspec => pubspec.workspaceUri.fsPath === description);

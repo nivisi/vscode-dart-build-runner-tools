@@ -1,3 +1,4 @@
+import path from 'path';
 import * as vscode from 'vscode';
 import { DartCommandType } from "../commands/registerContextMenuCommands";
 import { commandPrefix } from '../extension';
@@ -21,7 +22,7 @@ export function createTerminal(
 
     if (files && files.length > 0) {
         if (files.length === 1) {
-            const fileName = files[0].split("/").reverse()[0];
+            const fileName = files[0].split(path.sep).reverse()[0];
             terminalName += ` (${fileName})`;
         } else {
             terminalName += ` (${files.length.toString()})`;
@@ -54,10 +55,10 @@ export function createTerminal(
 
     if (!pubspec.isRoot) {
         var pathToCd = pubspec.workspaceUri.fsPath;
-        if (pathToCd[0] === '/') {
+        if (pathToCd[0] === path.sep) {
             pathToCd = pathToCd.slice(1);
         }
-        terminal.sendText(`cd ${pathToCd.replace('/pubspec.yaml', '')}`, true);
+        terminal.sendText(`cd ${pathToCd.replace(`${path.sep}pubspec.yaml`, '')}`, true);
     }
 
     return terminal;
@@ -74,12 +75,12 @@ export function runBuildRunner(
     const includeDeleteConflictingOutputs = vscode.workspace.getConfiguration().get<boolean>(`${commandPrefix}.deleteConflictingOutputs`, false);
     const deleteConflictingOutputsFlag = includeDeleteConflictingOutputs ? '--delete-conflicting-outputs' : '';
 
-    var path = pubspecFile?.workspaceUri.fsPath;
-    if (path && path[0] === '/') {
-        path = path.slice(1);
+    var filePath = pubspecFile?.workspaceUri.fsPath;
+    if (filePath && filePath[0] === path.sep) {
+        filePath = filePath.slice(1);
     }
 
-    const workspaceToReplace = path?.replace('/pubspec.yaml', '') ?? '';
+    const workspaceToReplace = filePath?.replace(`${path.sep}pubspec.yaml`, '') ?? '';
 
     if (pubspecFile) {
         files = files.map(
@@ -90,7 +91,7 @@ export function runBuildRunner(
         );
     }
 
-    const buildFilters = files.map(file => `--build-filter=${file[0] === '/' ? file.slice(1) : file} `);
+    const buildFilters = files.map(file => `--build-filter=${file[0] === path.sep ? file.slice(1) : file} `);
 
     const fullCommand = `${baseCommand} ${commandVariant} ${deleteConflictingOutputsFlag} --release ${buildFilters.join(' ')}`;
 

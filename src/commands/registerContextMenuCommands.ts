@@ -1,3 +1,4 @@
+import * as path from 'path';
 import * as vscode from 'vscode';
 import { commandPrefix } from '../extension';
 import { DartMultiplePubspecsWorkspaceType, DartNoPubspecWorkspaceType, DartSinglePubspecWorkspaceType, DartWorkspaceType, PubspecFile } from '../utils/analyzeWorkspaceType';
@@ -91,19 +92,16 @@ async function mapDartFilesToPubspecFiles(context: vscode.ExtensionContext, file
 
     for (const file of files) {
         var parentPubspec: PubspecFile | undefined;
-        var libIndex = file.lastIndexOf('lib/');
-        if (libIndex === -1) {
-            continue;
-        }
+        var libIndex = file.lastIndexOf(`lib${path.sep}`);
 
         while (libIndex !== -1) {
-            const potentialParentPubspecPath = '/' + file.substring(0, libIndex) + 'pubspec.yaml';
+            const potentialParentPubspecPath = path.sep + file.substring(0, libIndex) + 'pubspec.yaml';
             parentPubspec = pubspecFiles.find(pubspec => pubspec.workspaceUri.fsPath === potentialParentPubspecPath);
             if (parentPubspec) {
                 break;
             }
 
-            libIndex = file.lastIndexOf('lib/', libIndex - 1);
+            libIndex = file.lastIndexOf(`lib${path.sep}`, libIndex - 1);
         }
 
         if (!parentPubspec) {

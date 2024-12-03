@@ -1,3 +1,4 @@
+import path from 'path';
 import * as vscode from 'vscode';
 import { analyzeWorkspaceType } from '../utils/analyzeWorkspaceType';
 
@@ -5,7 +6,7 @@ import { analyzeWorkspaceType } from '../utils/analyzeWorkspaceType';
 /// that triggers a workspace analysis when a change is detected.
 /// Required in order to show the correct commands in the context menu.
 export function watchFileChanges(context: vscode.ExtensionContext) {
-    const watcher = vscode.workspace.createFileSystemWatcher("**/pubspec.yaml");
+    const watcher = vscode.workspace.createFileSystemWatcher(`**${path.sep}pubspec.yaml`);
     watcher.onDidChange(uri => {
         console.log("BR Tools: pubspec.yaml changed, analyzing workspace ...");
         analyzeWorkspaceType(context);

@@ -1,3 +1,4 @@
+import path from "path";
 import * as vscode from "vscode";
 
 export async function analyzeWorkspaceType(
@@ -63,7 +64,7 @@ async function uriToPubspecFile(uri: vscode.Uri): Promise<PubspecFile | undefine
         uri,
         relativeUri,
         packageName,
-        relativeUri.fsPath === '/pubspec.yaml'
+        relativeUri.fsPath === `${path.sep}pubspec.yaml`
     );
 }
 

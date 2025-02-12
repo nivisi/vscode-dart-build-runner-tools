@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.5
+
+- Fix the Workspace Type not being storable in `context.workspaceState` (see [#7](https://github.com/nivisi/vscode-dart-build-runner-tools/issues/7))
+- Update content and metadata
+
 ## 1.2.4
 
 - Use correct path separators when reading / analyzing file system.

@@ -3,7 +3,7 @@
   "displayName": "Flutter build_runner Tools",
   "description": "Generate code for Dart and Flutter by running build_runner commands directly from VS Code’s context menu, Command Palette, and keyboard shortcuts.",
   "icon": "img/logo.png",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "publisher": "nivisi",
   "license": "MIT",
   "repository": {

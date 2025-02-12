@@ -1,6 +1,20 @@
 import path from "path";
 import * as vscode from "vscode";
 
+/// This is a temporary solution to store the workspace type promise.
+/// See https://github.com/nivisi/vscode-dart-build-runner-tools/issues/7
+class WorkspaceTypeStorage {
+    private static promise: Promise<DartWorkspaceType> | undefined;
+
+    static setPromise(promise: Promise<DartWorkspaceType>) {
+        this.promise = promise;
+    }
+
+    static get(): Promise<DartWorkspaceType> | undefined {
+        return this.promise;
+    }
+}
+
 export async function analyzeWorkspaceType(
     context: vscode.ExtensionContext
 ): Promise<DartWorkspaceType> {
@@ -17,7 +31,7 @@ export async function analyzeWorkspaceType(
         }
     );
 
-    context.workspaceState.update("workspaceType", typePromise);
+    WorkspaceTypeStorage.setPromise(typePromise);
 
     return typePromise;
 }
@@ -71,12 +85,7 @@ async function uriToPubspecFile(uri: vscode.Uri): Promise<PubspecFile | undefine
 
 export class DartWorkspaceType {
     static async getFromContext(context: vscode.ExtensionContext): Promise<DartWorkspaceType | undefined> {
-        const workspaceType = context.workspaceState.get("workspaceType");
-        if (!workspaceType) {
-            return undefined;
-        }
-
-        return workspaceType;
+        return WorkspaceTypeStorage.get();
     }
 
     static async parseFrom(context: vscode.ExtensionContext): Promise<DartWorkspaceType> {

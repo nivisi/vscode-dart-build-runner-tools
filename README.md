@@ -1,4 +1,4 @@
-# build_runner VS Code Tools [![marketplace][version-img]][marketplace-url] [![gh][github-img]][github]
+# Flutter build_runner VS Code Tools [![marketplace][version-img]][marketplace-url] [![gh][github-img]][github]
 
 [`build_runner`](https://pub.dev/packages/build_runner) integrated right into VS Code. Run it on specific files / projects from context menu or command palette.
 

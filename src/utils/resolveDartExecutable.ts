@@ -10,6 +10,12 @@ export function resolveDartExecutable(context: vscode.ExtensionContext): string 
     return 'dart';
   }
 
+  const sdk = vscode.workspace.getConfiguration().get<string>(`dart.flutterSdkPath`, '');
+
+  if (sdk.includes('.fvm/versions/')) {
+    return 'fvm exec dart';
+  }
+
   const workspaceRoot =
     vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0
       ? vscode.workspace.workspaceFolders[0].uri.fsPath

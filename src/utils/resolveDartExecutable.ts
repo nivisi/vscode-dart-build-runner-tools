@@ -4,7 +4,7 @@ import * as vscode from 'vscode';
 import { commandPrefix } from "../extension";
 
 export function resolveDartExecutable(context: vscode.ExtensionContext): string {
-  const fvmSupport = vscode.workspace.getConfiguration().get<string>(`${commandPrefix}.fvmSupport`, 'no-support');
+  const fvmSupport = vscode.workspace.getConfiguration().get<string>(`${commandPrefix}.fvmSupport`, 'fvm-binary');
 
   if (fvmSupport == 'fvm-binary') {
     const sdk = vscode.workspace.getConfiguration().get<string>(`dart.flutterSdkPath`, '');

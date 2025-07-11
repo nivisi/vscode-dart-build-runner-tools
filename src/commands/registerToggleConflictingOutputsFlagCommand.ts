@@ -12,14 +12,4 @@ export function registerToggleConflictingOutputsFlagCommand(context: vscode.Exte
         vscode.workspace.getConfiguration().update(`${commandPrefix}.deleteConflictingOutputs`, false, vscode.ConfigurationTarget.Global);
         vscode.window.showInformationMessage(`Delete Conflicting Outputs is Disabled.`);
     }));
-
-    context.subscriptions.push(vscode.commands.registerCommand(`${commandPrefix}.enableFvmSupport`, () => {
-        vscode.workspace.getConfiguration().update(`${commandPrefix}.fvmSupport`, true, vscode.ConfigurationTarget.Global);
-        vscode.window.showInformationMessage(`FVM Support is Enabled.`);
-    }));
-
-    context.subscriptions.push(vscode.commands.registerCommand(`${commandPrefix}.disableFvmSupport`, () => {
-        vscode.workspace.getConfiguration().update(`${commandPrefix}.fvmSupport`, false, vscode.ConfigurationTarget.Global);
-        vscode.window.showInformationMessage(`FVM Support is Disabled.`);
-    }));
 }

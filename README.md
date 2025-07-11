@@ -70,9 +70,11 @@ Yes, the command is ran in a new terminal window each time it is executed. Meani
 
 ### Is FVM Supported?
 
-Yes. By default, the extension checks if your workspace contains an FVM config, and if so, it runs the `build_runner` command using `fvm exec`.
+Yes. If your workspace supports FVM, the extension will detect it and try to use it as per your [config](vscode://settings/dartBuildRunnerTools.fvmSupport):
 
-This setting can be disabled in VS Code settings or by running the command `Disable FVM Support` from the command palette.
+- **Use FVM Dart binary**: The extension will locate the Dart SDK provided by FVM and use it directly.
+- **Use fvm exec**: The extension will run `fvm exec dart` instead.
+- **Disable FVM Support**: The extension will run the Dart SDK directly.
 
 <!-- References -->
 

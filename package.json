@@ -44,6 +44,11 @@
           "type": "boolean",
           "default": false,
           "description": "Enable or disable the --delete-conflicting-outputs flag for Dart build_runner commands."
+        },
+        "dartBuildRunnerTools.fvmSupport": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to use FVM (Flutter Version Management) for Dart SDK."
         }
       }
     },
@@ -71,6 +76,14 @@
       {
         "command": "dartBuildRunnerTools.disableDeleteConflictingOutputs",
         "title": "build_runner: Disable Delete Conflicting Outputs"
+      },
+      {
+        "command": "dartBuildRunnerTools.enableFvmSupport",
+        "title": "build_runner: Enable FVM Support"
+      },
+      {
+        "command": "dartBuildRunnerTools.disableFvmSupport",
+        "title": "build_runner: Disable FVM Support"
       },
       {
         "command": "dartBuildRunnerTools.buildWorkspace",
@@ -126,6 +139,14 @@
         {
           "command": "dartBuildRunnerTools.disableDeleteConflictingOutputs",
           "when": "config.dartBuildRunnerTools.deleteConflictingOutputs == true"
+        },
+        {
+          "command": "dartBuildRunnerTools.enableFvmSupport",
+          "when": "config.dartBuildRunnerTools.fvmSupport == false"
+        },
+        {
+          "command": "dartBuildRunnerTools.disableFvmSupport",
+          "when": "config.dartBuildRunnerTools.fvmSupport == true"
         }
       ],
       "editor/title": [

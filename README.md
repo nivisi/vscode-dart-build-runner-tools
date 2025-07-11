@@ -44,7 +44,7 @@ Once ran, it collects required files (part directives for **part** commands and 
 
 ### Are monorepos supported?
 
-Yes, the extension works in monorepos. The [build_runner menu](#menu-command-palette)) lists all supported projects. When working with files, the extension automatically detects the associated project and runs code generation for that project.
+Yes, the extension works in monorepos. The [build_runner menu](#menu-command-palette) lists all supported projects. When working with files, the extension automatically detects the associated project and runs code generation for that project.
 
 ### How do I delete-conflicting-outputs?
 
@@ -67,6 +67,12 @@ Yes, you can run this command on multiple files / folders at once.
 Yes, the command is ran in a new terminal window each time it is executed. Meaning that you can run the `watch` command on the `File A` and then run the `build` command on the `File B`. For your convenience, you can rename terminal windows yourself to not mix them up.
 
 ![vscode_showcase_parallel](https://github.com/nivisi/vscode-dart-build-runner-tools/assets/33932162/ff72eee9-a2b2-466a-8ce2-94c7d7f297e7)
+
+### Is FVM Supported?
+
+Yes. By default, the extension checks if your workspace contains an FVM config, and if so, it runs the `build_runner` command using `fvm exec`.
+
+This setting can be disabled in VS Code settings or by running the command `Disable FVM Support` from the command palette.
 
 <!-- References -->
 

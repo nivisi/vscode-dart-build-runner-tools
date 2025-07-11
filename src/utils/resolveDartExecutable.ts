@@ -11,7 +11,7 @@ export function resolveDartExecutable(context: vscode.ExtensionContext): string 
 
     if (sdk.includes(`.fvm${path.sep}versions${path.sep}`)) {
       const executableName = process.platform === 'win32' ? 'dart.bat' : 'dart';
-      const fvmDartPath = sdk + `${path.sep}bin${path.sep}${executableName}`;
+      const fvmDartPath = path.join(sdk, 'bin', executableName);
 
       return fvmDartPath;
     }

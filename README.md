@@ -80,5 +80,5 @@ Yes. If your workspace supports FVM, the extension will detect it and try to use
 
 [github]: https://github.com/nivisi/vscode-dart-build-runner-tools
 [github-img]: https://img.shields.io/badge/GitHub-Source%20Code-181717?logo=github
-[version-img]: https://img.shields.io/badge/marketplace-v1.2.5-007ACC?logo=visualstudiocode
+[version-img]: https://img.shields.io/badge/marketplace-v1.3.0-007ACC?logo=visualstudiocode
 [marketplace-url]: https://marketplace.visualstudio.com/items?itemName=nivisi.dart-build-runner-tools

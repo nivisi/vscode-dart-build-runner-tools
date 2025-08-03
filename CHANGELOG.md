@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.3.0
+
+- Adds FVM support [#9](https://github.com/nivisi/vscode-dart-build-runner-tools/pull/9)
+  - New setting, `dartBuildRunnerTools.fvmSupport`
+    - `fvm-binary` — tries to use the Dart SDK provided by FVM.
+    - `fvm-exec` — runs `fvm exec dart`.
+    - `no-support` — runs the Dart SDK directly.
+
 ## 1.2.5
 
 - Fix the Workspace Type not being storable in `context.workspaceState` (see [#7](https://github.com/nivisi/vscode-dart-build-runner-tools/issues/7))

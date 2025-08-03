@@ -59,6 +59,7 @@ async function runDartCommandFromContextMenu(context: vscode.ExtensionContext, f
         );
 
         runBuildRunner(
+            context,
             newTerminal,
             dartFiles,
             commandType,

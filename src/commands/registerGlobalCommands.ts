@@ -28,7 +28,7 @@ export async function registerWorkspaceCommands(context: vscode.ExtensionContext
                 }
 
                 const terminal = createTerminal([], type, true, pubspec);
-                runBuildRunner(terminal, [], type);
+                runBuildRunner(context, terminal, [], type);
 
                 terminal.show();
             }

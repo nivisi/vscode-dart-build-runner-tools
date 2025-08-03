@@ -3,6 +3,7 @@ import * as vscode from 'vscode';
 import { DartCommandType } from "../commands/registerContextMenuCommands";
 import { commandPrefix } from '../extension';
 import { PubspecFile } from './analyzeWorkspaceType';
+import { resolveDartExecutable } from './resolveDartExecutable';
 
 export function createTerminal(
     files?: string[],
@@ -65,13 +66,17 @@ export function createTerminal(
 }
 
 export function runBuildRunner(
+    context: vscode.ExtensionContext,
     terminal: vscode.Terminal,
     files: string[],
     commandType: DartCommandType,
     pubspecFile?: PubspecFile
 ) {
     const commandVariant = commandType === DartCommandType.Watch ? 'watch' : 'build';
-    const baseCommand = 'dart run build_runner';
+
+    const executable = resolveDartExecutable(context);
+    const baseCommand = `${executable} run build_runner`;
+
     const includeDeleteConflictingOutputs = vscode.workspace.getConfiguration().get<boolean>(`${commandPrefix}.deleteConflictingOutputs`, false);
     const deleteConflictingOutputsFlag = includeDeleteConflictingOutputs ? '--delete-conflicting-outputs' : '';
 

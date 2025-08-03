@@ -38,12 +38,32 @@
   "main": "./out/extension.js",
   "contributes": {
     "configuration": {
-      "title": "Dart build_runner Configuration",
+      "title": "build_runner Tools",
       "properties": {
         "dartBuildRunnerTools.deleteConflictingOutputs": {
           "type": "boolean",
           "default": false,
           "description": "Enable or disable the --delete-conflicting-outputs flag for Dart build_runner commands."
+        },
+        "dartBuildRunnerTools.fvmSupport": {
+          "type": "string",
+          "enum": [
+            "fvm-binary",
+            "fvm-exec",
+            "no-support"
+          ],
+          "markdownEnumDescriptions": [
+            "The extension will locate the Dart SDK provided by FVM and use it directly.",
+            "The extension will run `fvm exec dart` instead of directly calling the Dart SDK.",
+            "No FVM Support: the extension will run the Dart SDK directly."
+          ],
+          "enumItemLabels": [
+            "Use FVM Dart binary",
+            "Use fvm exec",
+            "Disable FVM Support"
+          ],
+          "default": "fvm-binary",
+          "description": "Select how the extension should handle FVM in the project."
         }
       }
     },
